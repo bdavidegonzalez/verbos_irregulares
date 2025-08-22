@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Narnia - Lector con Audio</title>
+    <link rel="stylesheet" href="./css/styles.css">
+    <style>
+        .book-container {
+            text-align: left;
+            line-height: 2;
+        }
+        .book-container p {
+            margin-bottom: 1em; /* Espacio entre párrafos */
+        }
+        .book-container span {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+        .book-container span:hover {
+            background-color: #e6f7ff;
+        }
+        .book-container .playing {
+            background-color: #cceeff;
+            font-weight: bold;
+        }
+        audio {
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Volver al menú</a>
+        <h1>Narnia: El león, la bruja y el armario</h1>
+
+        <audio id="book-audio" controls>
+            <source src="./audio/3ceb8779-f1a6-4b28-8729-8777fa36c07a.mp3" type="audio/mpeg">
+            Tu navegador no soporta el elemento de audio.
+        </audio>
+
+        <div id="book-text" class="book-container">
+            <!-- El texto se cargará aquí con JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const audioPlayer = document.getElementById('book-audio');
+            const bookTextContainer = document.getElementById('book-text');
+            let subtitles = [];
+
+            // Función para convertir el tiempo de SRT a segundos
+            function srtTimeToSeconds(time) {
+                const parts = time.split(/[:,]/);
+                const hours = parseInt(parts[0], 10);
+                const minutes = parseInt(parts[1], 10);
+                const seconds = parseInt(parts[2], 10);
+                const milliseconds = parseInt(parts[3], 10);
+                return hours * 3600 + minutes * 60 + seconds + milliseconds / 1000;
+            }
+
+            // Función para parsear el contenido del SRT
+            function parseSRT(data) {
+                const srtEntries = data.trim().replace(/\r/g, '').split(/\n\s*\n/);
+                return srtEntries.map(entry => {
+                    const lines = entry.split('\n');
+                    if (lines.length >= 3) {
+                        const timeLine = lines[1];
+                        const textLines = lines.slice(2).join(' ');
+                        const [startTimeStr, endTimeStr] = timeLine.split(' --> ');
+
+                        return {
+                            start: srtTimeToSeconds(startTimeStr),
+                            end: srtTimeToSeconds(endTimeStr),
+                            text: textLines
+                        };
+                    }
+                    return null;
+                }).filter(Boolean);
+            }
+
+            // Cargar y procesar el archivo SRT con manejo de errores
+            fetch('./audio/narnia.srt')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error HTTP: ${response.status} - No se pudo encontrar el archivo.`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    subtitles = parseSRT(data);
+                     if (subtitles.length === 0) {
+                        throw new Error("No se encontraron subtítulos válidos en el archivo. Verifique el formato del SRT.");
+                    }
+                    displaySubtitles();
+                })
+                .catch(e => {
+                    console.error('Error al cargar o procesar el archivo SRT:', e);
+                    bookTextContainer.innerHTML = `<p style="color: red; text-align: center;"><b>Error:</b> ${e.message}</p>`;
+                });
+            
+            // Mostrar los subtítulos organizados en párrafos
+            function displaySubtitles() {
+                bookTextContainer.innerHTML = '';
+                if (subtitles.length === 0) return;
+
+                let currentParagraph = document.createElement('p');
+                bookTextContainer.appendChild(currentParagraph);
+
+                subtitles.forEach((line, index) => {
+                    const span = document.createElement('span');
+                    span.textContent = line.text + ' ';
+                    span.dataset.startTime = line.start;
+                    span.dataset.index = index;
+                    currentParagraph.appendChild(span);
+
+                    // Si hay una pausa de más de 1.2 segundos, empezar un nuevo párrafo.
+                    const nextLine = subtitles[index + 1];
+                    if (nextLine && (nextLine.start - line.end > 1.2)) {
+                        currentParagraph = document.createElement('p');
+                        bookTextContainer.appendChild(currentParagraph);
+                    }
+                });
+            }
+
+            // Resaltar la línea actual mientras se reproduce el audio
+            let lastHighlightedIndex = -1;
+            audioPlayer.addEventListener('timeupdate', () => {
+                const currentTime = audioPlayer.currentTime;
+                const currentIndex = subtitles.findIndex(line => currentTime >= line.start && currentTime <= line.end);
+
+                if (currentIndex !== -1 && currentIndex !== lastHighlightedIndex) {
+                    const spans = bookTextContainer.querySelectorAll('span');
+                    if (lastHighlightedIndex !== -1) {
+                        spans[lastHighlightedIndex].classList.remove('playing');
+                    }
+                    spans[currentIndex].classList.add('playing');
+                    lastHighlightedIndex = currentIndex;
+                }
+            });
+
+            // Sincronizar al hacer clic en una línea de texto
+            bookTextContainer.addEventListener('click', (e) => {
+                if (e.target.tagName === 'SPAN') {
+                    const startTime = e.target.dataset.startTime;
+                    if (startTime) {
+                        audioPlayer.currentTime = parseFloat(startTime);
+                        audioPlayer.play();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

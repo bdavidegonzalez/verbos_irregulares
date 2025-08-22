@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adverbios de Tiempo y Frecuencia</title>
+    <title>Adverbios en Inglés</title>
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
@@ -12,82 +12,13 @@
         <h1>Adverbios de Tiempo y Frecuencia</h1>
 
         <h2>1. Simple Time Adverbs</h2>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Adverbio</th>
-                        <th>Uso / Significado</th>
-                        <th>Ejemplo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Now</td><td>Ahora</td><td>I am writing this sentence right now.</td></tr>
-                    <tr><td>Yesterday</td><td>Ayer</td><td>I went to the park yesterday.</td></tr>
-                    <tr><td>Today</td><td>Hoy</td><td>There’s a lot of sun today!</td></tr>
-                    <tr><td>Tomorrow</td><td>Mañana</td><td>We are leaving for our vacation tomorrow.</td></tr>
-                    <tr><td>Soon</td><td>Pronto</td><td>The movie will start soon.</td></tr>
-                    <tr><td>Later</td><td>Más tarde</td><td>We’ll eat later.</td></tr>
-                    <tr><td>Early</td><td>Temprano</td><td>She always wakes up early.</td></tr>
-                    <tr><td>Late</td><td>Tarde</td><td>I apologize for being late.</td></tr>
-                    <tr><td>Briefly</td><td>Brevemente</td><td>She talked briefly and then stopped.</td></tr>
-                    <tr><td>Momentarily</td><td>Momentáneamente</td><td>The sun disappeared momentarily, but then it came back.</td></tr>
-                    <tr><td>Forever</td><td>Para siempre</td><td>I will love you forever.</td></tr>
-                    <tr><td>Temporarily</td><td>Temporalmente</td><td>He is living with his friend temporarily.</td></tr>
-                </tbody>
-            </table>
-        </div>
+        <div id="table-container-simple"></div>
 
         <h2>2. Time Adverbs with Prepositions</h2>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Estructura / Adverbio</th>
-                        <th>Uso / Significado</th>
-                        <th>Ejemplo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Before</td><td>Antes</td><td>Please finish your homework before going to bed.</td></tr>
-                    <tr><td>After</td><td>Después</td><td>We go to the movies after finishing our work.</td></tr>
-                    <tr><td>During</td><td>Durante</td><td>I read a book during my lunch break.</td></tr>
-                    <tr><td>Since</td><td>Desde</td><td>I have been studying Spanish since last year.</td></tr>
-                    <tr><td>Until</td><td>Hasta</td><td>You can stay up until 10 p.m.</td></tr>
-                    <tr><td>While</td><td>Mientras</td><td>He was watching TV while eating dinner.</td></tr>
-                    <tr><td>In (the morning)</td><td>En (la mañana)</td><td>I have to go to the doctor in the morning.</td></tr>
-                    <tr><td>On (Monday)</td><td>En (el lunes)</td><td>I’ll be in London on Friday.</td></tr>
-                    <tr><td>At (6 o’clock)</td><td>A (las 6 en punto)</td><td>I’ll see you at 6 o’clock.</td></tr>
-                    <tr><td>From…to…</td><td>Desde… hasta…</td><td>The sports class lasts from 9 to 10 am.</td></tr>
-                    <tr><td>For</td><td>Durante / Por</td><td>She’s been waiting for him for 2 hours.</td></tr>
-                </tbody>
-            </table>
-        </div>
+        <div id="table-container-prepositions"></div>
 
         <h2>3. Frequency Adverbs</h2>
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Adverbio</th>
-                        <th>Uso / Significado</th>
-                        <th>Posición</th>
-                        <th>Ejemplo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Always</td><td>Siempre</td><td>Antes del verbo (o después de "to be")</td><td>He hasn’t always agreed with me.</td></tr>
-                    <tr><td>Usually</td><td>Usualmente</td><td>Antes del verbo</td><td>They usually eat out on the weekend.</td></tr>
-                    <tr><td>Often</td><td>A menudo</td><td>Antes del verbo</td><td>We don’t often go to bed late.</td></tr>
-                    <tr><td>Sometimes</td><td>A veces</td><td>Antes del verbo / al inicio o final</td><td>Do you sometimes travel abroad?</td></tr>
-                    <tr><td>Never</td><td>Nunca</td><td>Antes del verbo / después de "to be"</td><td>I never go to the barber.</td></tr>
-                    <tr><td>Daily</td><td>A diario</td><td>Generalmente al final</td><td>She exercises daily.</td></tr>
-                    <tr><td>Weekly</td><td>Semanalmente</td><td>Generalmente al final</td><td>We meet weekly.</td></tr>
-                    <tr><td>Monthly</td><td>Mensualmente</td><td>Generalmente al final</td><td>They pay the rent monthly.</td></tr>
-                    <tr><td>Yearly</td><td>Anualmente</td><td>Generalmente al final</td><td>The event is held yearly.</td></tr>
-                </tbody>
-            </table>
-        </div>
+        <div id="table-container-frequency"></div>
         
         <h3>📌 Reglas clave de posición:</h3>
         <ul>
@@ -96,5 +27,26 @@
             <li>Con adverbios de frecuencia específica (daily, weekly, monthly, yearly): suelen ir al final → <code>She exercises daily.</code></li>
         </ul>
     </div>
+    <script src="./js/data.js"></script>
+    <script src="./js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            createPaginatedTable(
+                'table-container-simple', 
+                studyData.simpleTimeAdverbs, 
+                ["Adverbio", "Uso / Significado", "Ejemplo"]
+            );
+            createPaginatedTable(
+                'table-container-prepositions', 
+                studyData.prepositionAdverbs, 
+                ["Estructura / Adverbio", "Uso / Significado", "Ejemplo"]
+            );
+            createPaginatedTable(
+                'table-container-frequency', 
+                studyData.frequencyAdverbs, 
+                ["Adverbio", "Uso / Significado", "Posición", "Ejemplo"]
+            );
+        });
+    </script>
 </body>
 </html>

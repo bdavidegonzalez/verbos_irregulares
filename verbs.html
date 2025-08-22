@@ -7,31 +7,21 @@
     <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-
     <div class="container">
         <a href="index.html" class="back-link">← Volver al menú</a>
         <h1>Verbos Irregulares en Inglés</h1>
-        <div class="table-wrapper">
-            <table id="verb-table">
-                <thead>
-                    <tr>
-                        <th>Infinitivo</th>
-                        <th>Pasado</th>
-                        <th>Participio Pasado</th>
-                        <th>Español</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Los datos de los verbos se insertarán aquí con JavaScript -->
-                </tbody>
-            </table>
-        </div>
-        <div class="navigation">
-            <button id="prev-btn">Anterior</button>
-            <button id="next-btn">Siguiente</button>
-        </div>
+        
+        <!-- El contenido de la tabla y la paginación se generará aquí -->
+        <div id="table-container"></div>
     </div>
 
-    <script src="./js/app.js"></script>
+    <script src="./js/data.js"></script>
+    <script src="./js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const headers = ["Infinitivo", "Pasado", "Participio Pasado", "Español"];
+            createPaginatedTable('table-container', studyData.irregularVerbs, headers);
+        });
+    </script>
 </body>
 </html>
